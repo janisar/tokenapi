@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import ee.ardel.tokenapi.models.TokenRequest;
 import ee.ardel.tokenapi.models.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,7 @@ public class TokenServiceImpl implements TokenService {
                     .withIssuer("janis")
                     .withClaim("role", user.getRole())
                     .withClaim("email", user.getEmail())
+                    .withClaim("id", user.getId())
                     .withClaim("firstName", user.getFirstName())
                     .withClaim("lastName", user.getLastName())
                     .sign(algorithmHS);
@@ -42,15 +44,25 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public Boolean validateToken(TokenRequest tokenRequest) {
         try {
-            JWTVerifier verifier = JWT.require(algorithmHS)
-                    .withIssuer("janis")
-                    .build();
-            verifier.verify(tokenRequest.getToken());
+            getToken(tokenRequest);
 
             return true;
         } catch (JWTVerificationException exception) {
             //Invalid signature/claims
         }
         return false;
+    }
+
+    @Override
+    public String getUserName(TokenRequest tokenRequest) {
+        DecodedJWT jwt = getToken(tokenRequest);
+        return jwt.getClaim("id").asString();
+    }
+
+    private DecodedJWT getToken(TokenRequest tokenRequest) {
+        JWTVerifier verifier = JWT.require(algorithmHS)
+                .withIssuer("janis")
+                .build();
+        return verifier.verify(tokenRequest.getToken());
     }
 }

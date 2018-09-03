@@ -10,4 +10,6 @@ public interface TokenService {
     String generateToken(User user);
 
     Boolean validateToken(TokenRequest tokenRequest);
+
+    String getUserName(TokenRequest tokenRequest);
 }

@@ -26,6 +26,11 @@ public class AuthController {
         return new ResponseEntity<>(tokenService.generateToken(user), HttpStatus.OK);
     }
 
+    @RequestMapping("/user")
+    public ResponseEntity<String> getUser(@RequestBody TokenRequest tokenRequest) {
+        return new ResponseEntity<>(tokenService.getUserName(tokenRequest), HttpStatus.OK);
+    }
+
     @RequestMapping("/validate")
     public ResponseEntity<Boolean> validateToken(@RequestBody TokenRequest tokenRequest) {
         return new ResponseEntity<>(tokenService.validateToken(tokenRequest), HttpStatus.OK);
