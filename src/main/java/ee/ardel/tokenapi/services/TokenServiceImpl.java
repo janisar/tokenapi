@@ -71,10 +71,11 @@ public class TokenServiceImpl implements TokenService {
 
     private String generateToken(User user) {
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, tokenKeyProvider.getPrivateKey())
+                .signWith(SignatureAlgorithm.RS512, tokenKeyProvider.getPrivateKey())
                 .claim(Claims.ID, user.getId())
                 .claim(Claims.ISSUED_AT, new Date())
                 .claim(Claims.EXPIRATION, getExpiry())
+                .claim("Role", user.getRole())
                 .compact();
     }
 
