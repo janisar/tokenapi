@@ -75,7 +75,7 @@ public class TokenServiceImpl implements TokenService {
                 .claim(Claims.ID, user.getId())
                 .claim(Claims.ISSUED_AT, new Date())
                 .claim(Claims.EXPIRATION, getExpiry())
-                .claim("Role", user.getRole())
+                .claim("role", "ROLE_" + user.getRole())
                 .compact();
     }
 
