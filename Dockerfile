@@ -1,10 +1,15 @@
-FROM openjdk:8-jdk-alpine
+FROM gradle:jdk11
 VOLUME /tmp
-ARG JAR_FILE=build/libs/tokenapi-0.0.1-SNAPSHOT.jar
-ADD ${JAR_FILE} app.jar
+COPY . /app
+
+WORKDIR /app
+USER root
+
+ENV GRADLE_HOME=/usr/bin/gradle
+ENV PATH=$PATH:$GRADLE_HOME/bin
+
+RUN gradle -s bootJar
 
 ENTRYPOINT ["/usr/bin/java"]
-
 EXPOSE 8082
-
-CMD ["-jar", "app.jar"]
+CMD ["-jar", "build/libs/tokenapi-0.1.0.jar"]
