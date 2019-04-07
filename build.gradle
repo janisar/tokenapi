@@ -19,6 +19,11 @@ group = 'ee.ardel'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.11
 
+bootJar {
+    baseName = 'tokenapi'
+    version = '0.1.0'
+}
+
 repositories {
     mavenCentral()
 }
