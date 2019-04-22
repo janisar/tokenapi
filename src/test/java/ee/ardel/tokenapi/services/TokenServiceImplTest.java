@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.interfaces.RSAPrivateKey;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -37,7 +38,6 @@ public class TokenServiceImplTest {
 
         User testUser = getTestUser("test1");
         Mockito.when(userRepository.findByEmailAndPassword(any(), any())).thenReturn(testUser);
-        Mockito.when(tokenKeyProvider.getPrivateKey()).thenReturn(new byte[100]);
 
         var token = tokenService.login(loginRequest);
 

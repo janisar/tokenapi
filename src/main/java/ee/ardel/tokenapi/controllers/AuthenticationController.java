@@ -2,6 +2,7 @@ package ee.ardel.tokenapi.controllers;
 
 import ee.ardel.tokenapi.models.LoginRequest;
 import ee.ardel.tokenapi.models.RegisterRequest;
+import ee.ardel.tokenapi.models.TokenResponse;
 import ee.ardel.tokenapi.services.TokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +21,12 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(tokenService.login(loginRequest));
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(toTokenResponse(tokenService.login(loginRequest)));
+    }
+
+    private TokenResponse toTokenResponse(String token) {
+        return new TokenResponse(token);
     }
 
 
